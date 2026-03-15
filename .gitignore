@@ -1,0 +1,27 @@
+# Editor
+.vscode/
+.idea/
+
+# Kiro
+.kiro/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend (handled by documind-frontend/.gitignore too)
+documind-frontend/node_modules/
+documind-frontend/dist/
+documind-frontend/build/
+documind-frontend/.eslintcache
+
+# Backend - Maven build output
+documind-backend/documind/target/
+
+# Backend - uploaded files (keep .gitkeep)
+documind-backend/data/uploads/*
+!documind-backend/data/uploads/.gitkeep
+
+# Environment files with secrets
+documind-frontend/.env.local
+documind-frontend/.env.*.local

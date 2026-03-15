@@ -1,0 +1,83 @@
+# 开发环境配置
+spring:
+
+  # Spring AI Alibaba 配置
+  ai:
+    dashscope:
+      # 通义千问 API Key (从环境变量读取) (这个需要你们去阿里云百炼平台申请apikey，然后还要开通模型服务)
+      api-key: ${DASHSCOPE_API_KEY}
+      # 百炼应用配置（用于Agent功能）
+      agent:
+        app-id: ${APP_ID:}  # 百炼应用ID，需要在控制台创建应用后获取
+      # 直接调用模型配置
+      chat:
+        options:
+          model: qwen-plus  # 使用qwen-plus模型
+          temperature: 0.7
+      embedding:
+        options:
+          model: text-embedding-v2
+    # 重试配置
+    retry:
+      max-attempts: 3
+      on-client-errors: false
+  
+  # 数据库配置 - MySQL(MySQL数据库配置换成你们自己的)
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/documind_ai?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: health
+    password: health
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+  
+  # Redis配置(redis配置换成你们自己的)
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:   # 如果Redis设置了密码，在这里填写
+      database: 1  # 使用数据库1（DocuMind专用）
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
+# MyBatis-Plus配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: cn.edu.cdu.documind.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# JWT配置
+jwt:
+  secret: documind-ai-secret-key-for-jwt-token-generation-must-be-at-least-256-bits-long-for-hs256-algorithm
+  expiration: 86400000  # 24小时（毫秒）
+
+# Springdoc OpenAPI 配置
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs  # OpenAPI JSON文档路径
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html  # Swagger UI访问路径
+    tags-sorter: alpha  # 按字母顺序排序标签
+    operations-sorter: alpha  # 按字母顺序排序接口
+    display-request-duration: true  # 显示请求耗时
+    default-models-expand-depth: 1
+    default-model-expand-depth: 1
+  show-actuator: false  # 不显示actuator端点
